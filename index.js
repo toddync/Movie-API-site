@@ -10,7 +10,7 @@ var TMDb = axios.get("https://api.themoviedb.org/3/discover/movie", {
     }
 });
 
-    console.log(TMDb.PromisseResult)
+    console.log(TMDb.data)
 
 
 const CardBuilder = (src, name) => {
