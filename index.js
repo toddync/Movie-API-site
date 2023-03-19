@@ -1,14 +1,15 @@
 import axios from 'axios';
 
 var holder = document.getElementById("CardsHolder");
-const key = "?";
+const key = "f4e22f1a9612fbe0d5a878abe5aa42f9";
 
 var data = axios.get("https://api.themoviedb.org/3/discover/movie", {
     params:{
         api_key: key
     }
-}); 
-console.log(data)
+});
+
+    console.log(data)
 
 const CardBuilder = (src, name) => {
     return `
