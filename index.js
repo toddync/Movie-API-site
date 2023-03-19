@@ -11,7 +11,7 @@ axios.get("https://api.themoviedb.org/3/discover/movie", {
         api_key: key
     }
 }).then( response => {
-    TMDb = response.data 
+    TMDb = response.data.results 
     holder.innerHTML = TMDb;
     console.log(TMDb)
 }).catch();
