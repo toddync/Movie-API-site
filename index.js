@@ -2,6 +2,7 @@
 
 var holder = document.getElementById("CardsHolder");
 const key = "f4e22f1a9612fbe0d5a878abe5aa42f9";
+var content = "";
 
 var data = axios.get("https://api.themoviedb.org/3/discover/movie", {
     params:{
@@ -9,7 +10,8 @@ var data = axios.get("https://api.themoviedb.org/3/discover/movie", {
     }
 });
 
-    console.log(data)
+    console.log(data.PromisseResult.data)
+
 
 const CardBuilder = (src, name) => {
     return `
