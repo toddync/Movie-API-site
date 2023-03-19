@@ -10,7 +10,7 @@ var TMDb = axios.get("https://api.themoviedb.org/3/discover/movie", {
     }
 });
 
-    TMDb.map( movie ()=>{
+    TMDb.map( movie => {
         console.log(movie)
     });
 
