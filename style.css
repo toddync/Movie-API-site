@@ -148,6 +148,7 @@ h2:after {
 .news .card:focus figcaption,
 .cards .card:active figcaption,
 .news .card:active figcaption {
+  background-color: rgba(0,0,0,0.6);
   transform: none;
 }
 .cards .card:hover:after,
@@ -201,6 +202,7 @@ h2:after {
 .news .article:hover figcaption,
 .news .article:focus figcaption,
 .news .article:active figcaption {
+  
   opacity: 1;
   transform: none;
 }
