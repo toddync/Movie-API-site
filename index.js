@@ -4,13 +4,13 @@ var holder = document.getElementById("CardsHolder");
 const key = "f4e22f1a9612fbe0d5a878abe5aa42f9";
 var content = "";
 
-var data = axios.get("https://api.themoviedb.org/3/discover/movie", {
+var TMDb = axios.get("https://api.themoviedb.org/3/discover/movie", {
     params:{
         api_key: key
     }
 });
 
-    console.log(data.PromisseResult.data)
+    console.log(TMDb.data)
 
 
 const CardBuilder = (src, name) => {
