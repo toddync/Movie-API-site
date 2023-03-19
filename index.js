@@ -11,9 +11,13 @@ axios.get("https://api.themoviedb.org/3/discover/movie", {
         api_key: key
     }
 }).then( response => {
-    TMDb = response.data.results 
+    TMDb = response.data.results ;
     holder.innerHTML = TMDb;
     console.log(TMDb)
+    console.log("\n\n\n\n");
+    TMDb.map( movies => {
+        console.log(movies);
+    });
 }).catch();
 
 const CardBuilder = (src, name) => {
