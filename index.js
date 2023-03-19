@@ -12,11 +12,9 @@ axios.get("https://api.themoviedb.org/3/discover/movie", {
     }
 }).then( response => {
     TMDb = response.data 
-}).catch();
-
     holder.innerHTML = TMDb;
     console.log(TMDb)
-
+}).catch();
 
 const CardBuilder = (src, name) => {
     return `
