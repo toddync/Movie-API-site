@@ -20,10 +20,10 @@ axios.get("https://api.themoviedb.org/3/discover/movie", {
         console.log(movies);
         content += CardBuilder(poster+movies.poster_path,movies.title);
     });
-    holder.innerHTML = poster;
+    holder.innerHTML = content;
     console.log("\n\n\n\n");
 
-    console.log(poster);
+    console.log(content);
 }).catch();
 
 const CardBuilder = (src, name) => {
