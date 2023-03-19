@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from './node_modules/axios/dist/axios.min.js';
 
 var holder = document.getElementById("CardsHolder");
 const key = "f4e22f1a9612fbe0d5a878abe5aa42f9";
