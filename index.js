@@ -1,34 +1,70 @@
-//import axios from './node_modules/axios/dist/axios.min.js';
-
 var holder = document.getElementById("CardsHolder");
 const key = "f4e22f1a9612fbe0d5a878abe5aa42f9";
 const poster = "http://image.tmdb.org/t/p/w500/";
-
+const changer = function (){
+    document.querySelectorAll(".change").forEach(change => {change.addEventListener("click", function(){subject("set")})})
+}
+const subject = function (mode){
+    if (mode == "change"){
+        var now = document.querySelector("strong").getAttribute("data-now")
+        var then = document.querySelector("strong").getAttribute("data-subject")
+        document.querySelector("strong").setAttribute("data-subject", now)
+        document.querySelector("strong").setAttribute("data-now", then)
+        document.querySelector("strong").innerHTML = then
+        LIST(1)
+    } else if (mode == "get"){
+        if (document.querySelector("strong").getAttribute("data-now") == "Movies<span class='change'>(Tv shows)</span>"){
+            return "movie"
+        } else {
+            return "tv"
+        }
+    } else if (mode == "set"){
+        document.querySelector("strong").innerHTML = "Movies<span class='change'>(Tv shows)</span>"
+        document.querySelector("strong").setAttribute("data-now", "Movies<span class='change'>(Tv shows)</span>")
+        document.querySelector("strong").setAttribute("data-subject", "Tv shows<span class='change'>(Movies)</span>")
+        LIST(1)
+    }
+    changer()
+    document.querySelector("#search").value = "" 
+    document.getElementById("number").innerHTML = "1"
+    document.querySelector("#previous").classList.add("none")
+};
+var search_text
 var TMDb
 
-function MOV(page_count){
-    var content = "";
+changer()
 
-    axios.get("https://api.themoviedb.org/3/discover/movie", {
+function LIST(page_count){
+    axios.get(`https://api.themoviedb.org/3/discover/${subject("get")}`, {
         params:{
             api_key: key,
             language: "pt-BR",
             region: "BR",
-            page: page_count
+            page: page_count,
         }
     }).then( response => {
-        TMDb = response.data.results ;
-        TMDb.map( movies => {
-            content += CardBuilder(poster+movies.poster_path,movies.title);
-        });
-    }).then(function (){
-        holder.innerHTML = content;
-        document.querySelector("loader").classList.add("none");
-        document.body.style.overflow = "auto";
+        CardBuilder(response.data.results)
     }).catch();
 }
+
+function search(page_count, q){
+    axios.get("https://api.themoviedb.org/3/search/multi", {
+        params:{
+            api_key: key,
+            language: "pt-BR",
+            region: "BR",
+            page: page_count,
+            query: q,
+            include_adult: false
+        }
+    }).then( response => {
+        CardBuilder(response.data.results)
+    }).catch();
+}
+
 document.querySelector("loader").classList.remove("none")
-MOV(1);
+document.querySelector("main").classList.remove("none")
+LIST(1);
 
 var arrows = document.querySelectorAll("span");
 arrows.forEach( arrow => {
@@ -40,7 +76,13 @@ arrows.forEach( arrow => {
         if(this.getAttribute("data-page") == "next"){
 
             document.querySelector("loader").classList.remove("none")
-            MOV(parseInt(number.innerHTML)+1);
+            document.querySelector("main").classList.remove("none")
+
+            if(document.querySelector("#search").getAttribute("data-search") == "yes"){
+                search(parseInt(number.innerHTML)+1, search_text)
+            }else{
+                LIST(parseInt(number.innerHTML)+1);
+            }
             number.innerHTML = parseInt(number.innerHTML)+1;
             document.querySelector("span[data-page='prev']").classList.remove("none");
             document.body.style.overflow = "hidden";
@@ -49,7 +91,13 @@ arrows.forEach( arrow => {
         } else if(this.getAttribute("data-page") == "prev" && (parseInt(number.innerHTML)-1) > 1){
     
             document.querySelector("loader").classList.remove("none")
-            MOV(parseInt(number.innerHTML)-1);
+            document.querySelector("main").classList.remove("none")
+
+            if(document.querySelector("#search").getAttribute("data-search") == "yes"){
+                search(parseInt(number.innerHTML)-1, search_text)
+            }else{
+                LIST(parseInt(number.innerHTML)-1);
+            }
             number.innerHTML = parseInt(number.innerHTML)-1;
             document.body.style.overflow = "hidden";
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -57,8 +105,14 @@ arrows.forEach( arrow => {
 
         } else if(this.getAttribute("data-page") == "prev" && (parseInt(number.innerHTML)-1) >= 1){
             document.querySelector("loader").classList.remove("none")
+            document.querySelector("main").classList.remove("none")
+
             this.classList.add("none");
-            MOV(parseInt(number.innerHTML)-1);
+            if(document.querySelector("#search").getAttribute("data-search") == "yes"){
+                search(parseInt(number.innerHTML)-1, search_text)
+            }else{
+                LIST(parseInt(number.innerHTML)-1);
+            }
             number.innerHTML = parseInt(number.innerHTML)-1;
             document.body.style.overflow = "hidden";
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -70,14 +124,48 @@ arrows.forEach( arrow => {
     }
 });
 
-const CardBuilder = (src, name) => {
-    return `
-    <figure class="card">
-
-        <img src="${src}" />
-
-        <figcaption>${name}</figcaption>
-
+const CardBuilder = (array) => {
+    var content = "";
+    array.map( movies => {
+        content += `
+    <figure class="card" data-id='${movies.id}'>
+        <img src="`; if(movies.poster_path){content+=poster+movies.poster_path}else if(movies.profile_path){content+=poster+movies.profile_path} content+=`" />
+        <figcaption>${movies.title||movies.name}</figcaption>
     </figure>`;
+
+});
+    holder.innerHTML = content;
+    document.querySelector("loader").classList.add("none");
+    document.querySelector("main").classList.add("none")
+    document.body.style.overflow = "auto";
 };
 
+document.querySelector("#search").addEventListener("keydown", function (){
+    search(1,this.value)
+    if(this.value != ""){
+        document.querySelector("strong").innerHTML="Search results";
+        document.querySelector(".footer").setAttribute("data-search", "yes");
+    } else {
+        LIST(1)
+        document.querySelector("strong").innerHTML= "Movies";
+        document.querySelector(".footer").setAttribute("data-search", "no");
+    }
+})
+
+document.querySelector("#search").addEventListener("keyup", function (){
+    search_text = this.value
+    search(1,this.value)
+    if(this.value != ""){
+        document.querySelector("#previous").classList.add("none")
+        document.querySelector("strong").innerHTML="Search results<span class='change'>(Movies)</span>";
+        this.setAttribute("data-search", "yes");
+        document.getElementById("number").innerHTML = "1"
+        changer()
+    } else {
+        document.querySelector("#previous").classList.add("none")
+        LIST(1)
+        subject("set")
+        this.setAttribute("data-search", "no");
+        document.getElementById("number").innerHTML = "1"
+    }
+})

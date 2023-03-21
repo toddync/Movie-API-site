@@ -9,7 +9,7 @@
 </head>
 <body>
 
-	<loader>
+<loader></loader>
 	<main>
 		<svg class="sp" viewBox="0 0 128 128" width="128px" height="128px" xmlns="http://www.w3.org/2000/svg">
 			<defs>
@@ -59,17 +59,16 @@
 			</g>
 		</svg>
 	</main>
-	</loader>
 
 <!-- partial:index.partial.html -->
 <div class="wrapper">
 
 	<label class="search" for="search">
-		<input type="text" id="search" placeholder="Search...">
+		<input type="text" id="search" placeholder="Search..." data-search="no">
 	</label>
 	
 
-	<h2><strong>Movies</strong></h2>
+	<h2><strong data-subject="Tv shows<span class='change'>(Movies)</span>" data-now="Movies<span class='change'>(Tv shows)</span>">Movies<span class="change">(Tv shows)</span></strong></h2>
 
 	<div class="cards" id="CardsHolder">
 
