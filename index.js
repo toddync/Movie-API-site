@@ -88,7 +88,7 @@ function descTv(id){
 document.querySelector("loader").classList.remove("none")
 document.querySelector("main").classList.remove("none")
 LIST(1);
-
+function set(){
 var arrows = document.querySelectorAll("span");
 arrows.forEach( arrow => {
     if( arrow.getAttribute("data-page")){
@@ -154,7 +154,8 @@ arrows.forEach( arrow => {
     }
 
 });
-
+}
+set()
 const CardBuilder = (array, counter, type) => {
     var content = "";
     array.map( movies => {
@@ -179,27 +180,26 @@ const CardBuilder = (array, counter, type) => {
 const DescBuilder = (array) => {
     var oi = `
         <div class="movieHolder">
-        <button id="remove"></button>
-<div class="movie_card">
-    <div class="info_section">
-      <div class="movie_header">
-        <img class="locandina" src="${poster+array.poster_path}"/>
-        <h1>${array.title || array.name}</h1>
-        <h4>${array.release_date}</h4>
-    <span class="minutes">${unnecessary(array.runtime)}</span>
-        <p class="type">`; array.genres.map(names => { oi+=" "+names.name+"; "}) ;oi+=`</p>
-      </div>
-      <div class="movie_desc">
-        <p class="text">${array.overview}</p>
-      </div>
+            <button id="remove"></button>
+            <div class="movie_card">
+                <div class="info_section">
+                    <div class="movie_header">
+                    <img class="locandina" src="${poster+array.poster_path}"/>
+                    <h1>${array.title || array.name}</h1>
+                    <h4>${array.release_date}</h4>
+                    <span class="minutes">${unnecessary(array.runtime)}</span>
+                    <p class="type">`; array.genres.map(names => { oi+=" "+names.name+"; "}) ;oi+=`</p>
+                </div>
+            <div class="movie_desc">
+                <p class="text">${array.overview}</p>
+            </div>
+        </div>
+        <div class="blur_back bright_back" style="background-image: url(${img(array.backdrop_path || array.poster_path)})"></div>
+        </div>
     </div>
-    <div class="blur_back bright_back" style="background-image: url(${img(array.backdrop_path || array.poster_path)})"></div>
-</div>
-</div>
   `;
-  document.body.innerHTML = oi + document.body.innerHTML;
-    document.querySelector("loader").classList.add("none");
-    document.querySelector("main").classList.add("none")
+  document.body.innerHTML += oi;
+    set()
     document.body.style.overflow = "hidden";
     window.scrollTo({ top: 0, behavior: 'smooth' });
     document.querySelector("#remove").addEventListener("click", function(){
