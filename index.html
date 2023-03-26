@@ -3,12 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <title>TMDb API Site</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css?family=Alegreya+Sans&display=swap" rel="stylesheet"><link rel="stylesheet" href="./style.css"><link rel="stylesheet" href="./loader.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Alegreya+Sans&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./loader.css">
+  <link rel="stylesheet" href="./cards.css">
 
 </head>
 <body>
-
 <loader></loader>
 	<main>
 		<svg class="sp" viewBox="0 0 128 128" width="128px" height="128px" xmlns="http://www.w3.org/2000/svg">
@@ -62,7 +64,7 @@
 
 <!-- partial:index.partial.html -->
 <div class="wrapper">
-
+	<div style="background-image: url(ttp://www.mypicx.com/uploadimg/1312875436_05012011_2.png)"></div>
 	<label class="search" for="search">
 		<input type="text" id="search" placeholder="Search..." data-search="no">
 	</label>
@@ -84,7 +86,7 @@
 
 	<div class="footer">
 		<span id="previous" data-page="prev" class="none"> &lt; Previous Page</span>
-		<span id="number">1</span>
+		<span data-pages="0" id="number">1</span>
 		<span id="next" data-page="next">Next Page &gt;</span>
 	</div>
 
