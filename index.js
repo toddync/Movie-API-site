@@ -1,6 +1,6 @@
 var holder = document.getElementById("CardsHolder");
 const key = "f4e22f1a9612fbe0d5a878abe5aa42f9";
-const poster = "http://image.tmdb.org/t/p/w500/";
+const poster = "https://image.tmdb.org/t/p/w500/";
 const changer = function (){
     document.querySelectorAll(".change").forEach(change => {change.addEventListener("click", function(){subject("change")})})
 }
@@ -13,15 +13,15 @@ const subject = function (mode){
         document.querySelector("strong").innerHTML = then
         LIST(1)
     } else if (mode == "get"){
-        if (document.querySelector("strong").getAttribute("data-now") == "Movies<span class='change'>(Tv shows)</span>"){
+        if (document.querySelector("strong").getAttribute("data-now") == "Movies<span class='change'>(<blue>Tv shows</blue>)</span>"){
             return "movie"
         } else {
             return "tv"
         }
     } else if (mode == "set"){
-        document.querySelector("strong").innerHTML = "Movies<span class='change'>(Tv shows)</span>"
-        document.querySelector("strong").setAttribute("data-now", "Movies<span class='change'>(Tv shows)</span>")
-        document.querySelector("strong").setAttribute("data-subject", "Tv shows<span class='change'>(Movies)</span>")
+        document.querySelector("strong").innerHTML = "Movies<span class='change'>(<bluee>Tv shows</blue>)</span>"
+        document.querySelector("strong").setAttribute("data-now", "Movies<span class='change'>(<blue>Tv shows</blue>)</span>")
+        document.querySelector("strong").setAttribute("data-subject", "Tv shows<span class='change'>(<blue>Movies</blue>)</span>")
         LIST(1)
     }
     changer()
@@ -39,12 +39,13 @@ function LIST(page_count){
         params:{
             api_key: key,
             language: "pt-BR",
-            region: "BR",
+            region:"BR",
             page: page_count,
             include_adult: false
         }
     }).then( response => {
         CardBuilder(response.data.results, response.data.total_pages, subject("get"))
+        console.log(response)
     }).catch();
 }
 
@@ -53,7 +54,6 @@ function search(page_count, q){
         params:{
             api_key: key,
             language: "pt-BR",
-            region: "BR",
             page: page_count,
             query: q,
             include_adult: false
@@ -89,13 +89,16 @@ document.querySelector("loader").classList.remove("none")
 document.querySelector("main").classList.remove("none")
 LIST(1);
 function set(){
+changer()
 var arrows = document.querySelectorAll("span");
 arrows.forEach( arrow => {
     if( arrow.getAttribute("data-page")){
     arrow.addEventListener("click", function (){
 
         var number = document.getElementById("number");
-
+        holder.innerHTML = ""
+console.log(parseInt(number.getAttribute("data-pages")))
+console.log(parseInt(number.innerHTML))
         if(this.getAttribute("data-page") == "next" && parseInt(number.getAttribute("data-pages")) >= (parseInt(number.innerHTML)+1) ){
 
             document.querySelector("loader").classList.remove("none")
@@ -154,9 +157,44 @@ arrows.forEach( arrow => {
     }
 
 });
+
+document.querySelector("#search").addEventListener("keydown", function (){
+    search(1,this.value)
+    if(this.value != ""){
+        document.querySelector("strong").innerHTML="Search results";
+        document.querySelector(".footer").setAttribute("data-search", "yes");
+    } else {
+        LIST(1)
+        subject("set") 
+    }
+})
+
+document.querySelector("#search").addEventListener("keyup", function (){
+    search_text = this.value
+    search(1,this.value)
+    if(this.value != ""){
+        document.querySelector("#previous").classList.add("none")
+        if (subject("get") == "movie"){
+            document.querySelector("strong").innerHTML= "Search results<span class='change'>(<blue>Tv shows</blue>)</span>";
+        } else {
+            document.querySelector("strong").innerHTML= "Search results<span class='change'>(<blue>Movies</blue>)</span>";
+        }
+        this.setAttribute("data-search", "yes");
+        document.getElementById("number").innerHTML = "1"
+        changer()
+    } else {
+        document.querySelector("#previous").classList.add("none")
+        LIST(1)
+        subject("set")
+        this.setAttribute("data-search", "no");
+        document.getElementById("number").innerHTML = "1"
+    }
+})
+
 }
 set()
 const CardBuilder = (array, counter, type) => {
+    var holder = document.getElementById("CardsHolder");
     var content = "";
     array.map( movies => {
         content += `
@@ -207,37 +245,6 @@ const DescBuilder = (array) => {
         document.body.style.overflow = "auto";
     })
 }
-
-document.querySelector("#search").addEventListener("keydown", function (){
-    search(1,this.value)
-    if(this.value != ""){
-        document.querySelector("strong").innerHTML="Search results";
-        document.querySelector(".footer").setAttribute("data-search", "yes");
-    } else {
-        LIST(1)
-        document.querySelector("strong").innerHTML= "Movies";
-        document.querySelector(".footer").setAttribute("data-search", "no");
-    }
-})
-
-document.querySelector("#search").addEventListener("keyup", function (){
-    search_text = this.value
-    search(1,this.value)
-    if(this.value != ""){
-        document.querySelector("#previous").classList.add("none")
-        document.querySelector("strong").innerHTML="Search results<span class='change'>(Movies)</span>";
-        this.setAttribute("data-search", "yes");
-        document.getElementById("number").innerHTML = "1"
-        changer()
-    } else {
-        document.querySelector("#previous").classList.add("none")
-        LIST(1)
-        subject("set")
-        this.setAttribute("data-search", "no");
-        document.getElementById("number").innerHTML = "1"
-    }
-})
-
 
 const unnecessary = function(time){
     if(time == undefined || time == "null"){
