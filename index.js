@@ -1,8 +1,10 @@
 var holder = document.getElementById("CardsHolder");
 const key = "f4e22f1a9612fbe0d5a878abe5aa42f9";
-const poster = "http://image.tmdb.org/t/p/w500/";
+const poster = "https://image.tmdb.org/t/p/w500/";
 const changer = function (){
-    document.querySelectorAll(".change").forEach(change => {change.addEventListener("click", function(){subject("set")})})
+    document.querySelectorAll(".change").forEach(change => {change.addEventListener("click", function(){
+            subject("change")
+    })})
 }
 const subject = function (mode){
     if (mode == "change"){
