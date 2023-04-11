@@ -1,9 +1,8 @@
-html{
+html, body{
   width: 100%;
   height: 100%;
   display: flex;
 }
-
 .abs,
 h2:after,
 .cards .card figcaption,
@@ -256,6 +255,10 @@ number{
   color: #fff;
   padding-left: 7px;
   font-size: large;
+}
+
+blue{
+  color:#7662cc
 }
 
 *{
