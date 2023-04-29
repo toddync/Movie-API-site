@@ -2,14 +2,11 @@ var holder = document.getElementById("CardsHolder");
 const key = "f4e22f1a9612fbe0d5a878abe5aa42f9";
 const poster = "https://image.tmdb.org/t/p/w500/";
 const changer = function (){
-<<<<<<< HEAD
     document.querySelectorAll(".change").forEach(change => {change.addEventListener("click", function(){
             subject("change")
     })})
-=======
-    document.querySelectorAll(".change").forEach(change => {change.addEventListener("click", function(){subject("change")})})
->>>>>>> 3c8b5cef1f72dea175ef7547ee19768aa29b89c3
 }
+
 const subject = function (mode){
     if (mode == "change"){
         var now = document.querySelector("strong").getAttribute("data-now")
@@ -163,7 +160,7 @@ console.log(parseInt(number.innerHTML))
     }
 
 });
-
+/*
 document.querySelector("#search").addEventListener("keydown", function (){
     search(1,this.value)
     if(this.value != ""){
@@ -173,9 +170,9 @@ document.querySelector("#search").addEventListener("keydown", function (){
         LIST(1)
         subject("set") 
     }
-})
+})*/
 
-document.querySelector("#search").addEventListener("keyup", function (){
+document.querySelector("#search").addEventListener("input", function (){
     search_text = this.value
     search(1,this.value)
     if(this.value != ""){
@@ -189,9 +186,9 @@ document.querySelector("#search").addEventListener("keyup", function (){
         document.getElementById("number").innerHTML = "1"
         changer()
     } else {
-        document.querySelector("#previous").classList.add("none")
         LIST(1)
         subject("set")
+        document.querySelector("#previous").classList.add("none")
         this.setAttribute("data-search", "no");
         document.getElementById("number").innerHTML = "1"
     }
